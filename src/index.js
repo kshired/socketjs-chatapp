@@ -38,29 +38,6 @@ wsServer.on('connection', (socket) => {
   });
 });
 
-// const sockets = [];
-
-// webSocketServer.on('connection', (socket) => {
-//   sockets.push(socket);
-//   console.log('Connected to Browser ✅');
-//   socket.on('close', () => console.log('Disconnected from the Browser ❌'));
-//   socket.on('message', (message) => {
-//     const data = JSON.parse(message.toString());
-//     switch (data.type) {
-//       case 'message':
-//         sockets.forEach((aSocket) => {
-//           aSocket.send(`${socket.nickname}: ${data.payload}`);
-//         });
-//         break;
-//       case 'nickname':
-//         socket['nickname'] = data.payload;
-//         break;
-//       default:
-//         return 0;
-//     }
-//   });
-// });
-
 server.listen(3000, () => {
   console.log(`Server is running at http://localhost:3000`);
 });
