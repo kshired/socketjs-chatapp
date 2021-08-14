@@ -51,8 +51,37 @@ const addMessage = (text) => {
   ul.appendChild(li);
 };
 
-socket.on('welcome', (nickname) => addMessage(`${nickname} joined!`));
+socket.on('welcome', (user, newCount) => {
+  const h3 = room.querySelector('h3');
+  h3.innerText = `Room ${roomName} (${newCount})`;
+  addMessage(`${user} arrived!`);
+});
 
-socket.on('bye', (nickname) => addMessage(`${nickname} left!`));
+socket.on('bye', (left, newCount) => {
+  const h3 = room.querySelector('h3');
+  h3.innerText = `Room ${roomName} (${newCount})`;
+  addMessage(`${left} left ㅠㅠ`);
+});
 
 socket.on('new_message', addMessage);
+
+socket.on('room_change', (rooms) => {
+  const roomList = welcome.querySelector('ul');
+  if (rooms.length === 0) {
+    roomList.innerHTML = '';
+    return;
+  }
+  rooms.forEach((room) => {
+    const li = document.createElement('li');
+    const btn = document.createElement('button');
+    btn.innerText = 'enter';
+    btn.addEventListener('click', (event) => {
+      event.preventDefault();
+      socket.emit('enter_room', room, showRoom);
+      roomName = room;
+    });
+    li.innerText = room;
+    li.appendChild(btn);
+    roomList.appendChild(li);
+  });
+});
